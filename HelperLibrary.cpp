@@ -1,13 +1,14 @@
-// 2017 WindyDarian (RuoyuF). MIT License
+// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "thegame.h"
-#include "HelperLibrary.h"
+
+#include "GMCPPBlueprintFunctionLibrary.h"
+
 
 #include <limits>
 
 constexpr auto InfFloat = std::numeric_limits<float>::max();
 
-float CalculateProjectileDirectionOneDimensionHelper(float Target, float Gravity, float Speed, bool * bWillHit, float * Time)
+float CalculateProjectileDirectionOneDimensionHelper(float Target, float Gravity, float Speed, bool* bWillHit, float* Time)
 {
 	// Helper function for 1D special case
 	// Gravity should always be positive
@@ -16,13 +17,13 @@ float CalculateProjectileDirectionOneDimensionHelper(float Target, float Gravity
 		if (bWillHit) { *bWillHit = true; }
 		if (Time)
 		{
-			*Time = (-Speed + FMath::Sqrt(Speed*Speed + 2 * Gravity * Target)) / Gravity;
+			*Time = (-Speed + FMath::Sqrt(Speed * Speed + 2 * Gravity * Target)) / Gravity;
 		}
 		return 1.0f; // Same direction as Gravity
 	}
 	else
 	{
-		auto Delta = Speed*Speed + 2 * Gravity * Target;
+		auto Delta = Speed * Speed + 2 * Gravity * Target;
 		if (Delta < 0)
 		{
 			if (bWillHit) { *bWillHit = false; }
@@ -52,7 +53,7 @@ float CalculateProjectileDirectionOneDimensionHelper(float Target, float Gravity
 
 }
 
-FVector CalculateProjectileDirectionHelper(FVector Target, FVector Origin, FVector Gravity, float Speed, bool * bWillHit, float * Time)
+FVector CalculateProjectileDirectionHelper(FVector Target, FVector Origin, FVector Gravity, float Speed, bool* bWillHit, float* Time)
 {
 	// TODO: Maybe changing zero related comparisons to an epsilon
 	if (Speed < 0)
@@ -144,12 +145,12 @@ FVector CalculateProjectileDirectionHelper(FVector Target, FVector Origin, FVect
 	return result;
 }
 
-FVector UHelperLibrary::CalculateProjectileDirection(FVector Target, FVector Origin, FVector Gravity, float Speed, bool & bWillHit, float & Time)
+FVector UGMCPPBlueprintFunctionLibrary::CalculateProjectileDirection(FVector Target, FVector Origin, FVector Gravity, float Speed, bool& bWillHit, float& Time)
 {
 	return CalculateProjectileDirectionHelper(Target, Origin, Gravity, Speed, &bWillHit, &Time);
 }
 
-FVector UHelperLibrary::CalculateProjectileDirectionForMovingTarget(FVector Target, FVector TargetVelocity, FVector Origin, FVector Gravity, float Speed, bool & bWillHit, float & Time, int Iterations, float EpsilonTime)
+FVector UGMCPPBlueprintFunctionLibrary::CalculateProjectileDirectionForMovingTarget(FVector Target, FVector TargetVelocity, FVector Origin, FVector Gravity, float Speed, bool& bWillHit, float& Time, int Iterations, float EpsilonTime)
 {
 	if (TargetVelocity.IsNearlyZero())
 	{
@@ -157,7 +158,7 @@ FVector UHelperLibrary::CalculateProjectileDirectionForMovingTarget(FVector Targ
 	}
 	if (Iterations <= 0)
 	{
-		UE_LOG(LnHLog, Warning, TEXT("Recursion Limit should be positve!"));
+	//	UE_LOG(LnHLog, Warning, TEXT("Recursion Limit should be positve!"));
 		Iterations = 10;
 	}
 
